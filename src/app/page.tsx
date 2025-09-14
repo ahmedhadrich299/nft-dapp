@@ -19,9 +19,11 @@ import {
 } from "thirdweb/extensions/erc721";
 
 import { useState } from "react";
+import useSepoliaBalance from "@/hooks/useSepoliaBalance";
 
 export default function Home() {
   const account = useActiveAccount();
+  const balance = useSepoliaBalance(); //Get the user balance
 
   const chain = defineChain(sepolia);
 
@@ -52,6 +54,10 @@ export default function Home() {
       quantity * parseInt(claimCondition?.pricePerToken.toString() || "0");
     return toEther(BigInt(total));
   };
+
+  console.log(balance);
+  const hasEnoughFunds =
+    balance && parseFloat(balance) >= parseFloat(getPrice(quantity));
 
   return (
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
@@ -115,7 +121,9 @@ export default function Home() {
               setQuantity(1);
             }}
           >
-            {`Claim NFT (${getPrice(quantity)} ETH)`}
+            {hasEnoughFunds
+              ? `Claim NFT (${getPrice(quantity)} ETH)`
+              : "Not enough funds"}
           </TransactionButton>
         </div>
       </div>
