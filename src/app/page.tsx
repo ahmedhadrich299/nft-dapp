@@ -23,13 +23,12 @@ import useSepoliaBalance from "@/hooks/useSepoliaBalance";
 
 export default function Home() {
   const account = useActiveAccount();
-  const balance = useSepoliaBalance(); //Get the user balance
+  const balance = useSepoliaBalance();
 
   const chain = defineChain(sepolia);
 
   const [quantity, setQuantity] = useState(1);
 
-  // Replace the address with the address of the deployed contract
   const contract = getContract({
     client: client,
     chain: chain,
@@ -60,7 +59,7 @@ export default function Home() {
     balance && parseFloat(balance) >= parseFloat(getPrice(quantity));
 
   return (
-    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
+    <main className="font-sans p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20 text-center">
         <Header />
         <ConnectButton client={client} chain={chain} />
@@ -108,23 +107,29 @@ export default function Home() {
               +
             </button>
           </div>
-          <TransactionButton
-            transaction={() =>
-              claimTo({
-                contract: contract,
-                to: account?.address || "",
-                quantity: BigInt(quantity),
-              })
-            }
-            onTransactionConfirmed={async () => {
-              alert("NFT Claimed!");
-              setQuantity(1);
-            }}
-          >
-            {hasEnoughFunds
-              ? `Claim NFT (${getPrice(quantity)} ETH)`
-              : "Not enough funds"}
-          </TransactionButton>
+
+          {hasEnoughFunds ? (
+            <TransactionButton
+              transaction={() =>
+                claimTo({
+                  contract: contract,
+                  to: account?.address || "",
+                  quantity: BigInt(quantity),
+                })
+              }
+              onTransactionConfirmed={async () => {
+                alert("NFT Claimed!");
+                setQuantity(1);
+              }}
+            >
+              {`Claim NFT (${getPrice(quantity)} ETH)`}
+            </TransactionButton>
+          ) : (
+            <span className="font-mono underline">
+              Please connect your wallet and make sure you have enough funds
+              available to mint the NFT.
+            </span>
+          )}
         </div>
       </div>
     </main>
@@ -134,7 +139,7 @@ export default function Home() {
 function Header() {
   return (
     <header className="flex flex-row items-center">
-      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
+      <h1 className="font-sans text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
         NFT Mint Dapp
       </h1>
     </header>

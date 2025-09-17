@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 
 declare global {
   interface Window {
-    ethereum?: unknown; // minimal typing to satisfy TypeScript
+    ethereum?: unknown;
   }
 }
 
