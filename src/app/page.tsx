@@ -126,8 +126,8 @@ export default function Home() {
             </TransactionButton>
           ) : (
             <span className="font-mono underline">
-              Please connect your wallet and make sure you have enough funds
-              available to mint the NFT.
+              Please connect your wallet and make sure you have enough Sepolia
+              Eth available to mint the NFT.
             </span>
           )}
         </div>
