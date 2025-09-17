@@ -138,8 +138,8 @@ export default function Home() {
 
 function Header() {
   return (
-    <header className="flex flex-row items-center">
-      <h1 className="font-sans text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
+    <header>
+      <h1 className="font-sans text-center text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
         NFT Mint Dapp
       </h1>
     </header>
